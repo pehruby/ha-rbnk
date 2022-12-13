@@ -1,0 +1,21 @@
+- alias: Rozsvit terasu na 30s, pohyb, noc
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.door_opening_detector_device_24_door
+      to: 'on'
+  condition:
+    - condition: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      below: -4.0
+    - condition: state
+      entity_id: alarm_control_panel.section_1
+      state: disarmed
+  action:
+    - service: switch.turn_on
+      data:
+        entity_id: switch.jablotron_100_pg_output_4
+    - delay: 00:00:30
+    - service: switch.turn_off
+      data:
+        entity_id: switch.jablotron_100_pg_output_4

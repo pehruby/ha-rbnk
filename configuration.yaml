@@ -1,0 +1,85 @@
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+http:
+  # api_password: YOUR_SECRET_PASSWORD
+  # ssl_certificate: certificate.pem
+  # ssl_key: privkey.pem
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 192.168.167.5
+    
+homeassistant:
+  name: Roubenka
+  latitude: !secret homeassistant_latitude
+  longitude: !secret homeassistant_longitude
+  elevation: !secret homeassistant_elevation
+  unit_system: metric
+  time_zone: Europe/Prague
+  currency: CZK
+  external_url: !secret external_url
+  internal_url: !secret internal_url
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+logger:
+  default: info
+  logs: 
+    custom_components.jablotron100: debug
+
+panel_iframe:
+  portainer:
+    title: Portainer
+    url: !secret portainer_url
+    icon: mdi:docker
+    require_admin: true
+  configurator:
+    title: Configurator
+    icon: mdi:wrench
+    url: !secret configurator_url
+    require_admin: true
+
+automation: !include_dir_merge_list automation
+scene: !include_dir_merge_list scene
+script: !include_dir_merge_named script
+
+recorder:
+  db_url: !secret mariadb
+  purge_keep_days: 10   # default
+
+
+influxdb:
+  api_version: 2
+  ssl: true
+  host: !secret influx_host
+  port: 443
+  token: !secret influx_token
+  organization: !secret influx_organization
+  bucket: home_assistant
+  tags:
+    source: HA
+  tags_attributes:
+    - friendly_name
+  default_measurement: units
+
+
+template:
+  - trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.motion_detector_device_4_motion
+          - binary_sensor.motion_detector_device_5_motion
+          - binary_sensor.motion_detector_device_6_motion
+          - binary_sensor.motion_detector_device_7_motion
+        to: 'on'
+    sensor:
+      - unique_id: last_pir_motion_sensor_triggered
+        name: Posledni detekovany pohyb
+        icon: mdi:motion-sensor
+        state: >
+          {{trigger.to_state.name}}
+        attributes:
+          entity_id: >
+            {{trigger.entity_id}}

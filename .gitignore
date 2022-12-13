@@ -1,0 +1,9 @@
+.cloud/
+.storage/
+.vscode/
+*
+!.gitignore
+!*.yaml
+!*/
+secrets.yaml
+services.yaml

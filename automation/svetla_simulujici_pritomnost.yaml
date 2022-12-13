@@ -1,0 +1,42 @@
+- alias: "Zapnuti svetla v loznici po zapadu slunce"
+  description: ""
+  trigger:
+    - platform: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      # Can be a positive or negative number
+      below: -4.0
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.shelly1_40f520169505
+
+- alias: "Vypnuti svetla v loznici ve stanoveny cas"
+  description: ""
+  trigger:
+    - platform: time
+      at: "21:10:00"
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.shelly1_40f520169505
+
+- alias: "Zapnuti svetla v pokojicku ve stanoveny cas"
+  description: ""
+  trigger:
+    - platform: time
+      at: "21:09:00"
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.shellyplus1_7c87ce592550
+
+- alias: "Vypnuti svetla v pokojicku ve stanoveny cas"
+  description: ""
+  trigger:
+    - platform: time
+      at: "22:01:00"
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.shellyplus1_7c87ce592550
