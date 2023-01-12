@@ -1,0 +1,18 @@
+- alias: "Nikdo doma a nezakodovano"
+  trigger: 
+    - platform: time_pattern
+      minutes: "/15"
+  condition: 
+    - condition: state
+      entity_id: "group.presence_home"
+      state: "not_home"
+      for:
+        minutes: 30
+    - condition: state
+      entity_id: "alarm_control_panel.section_1"
+      state: "Disarmed"
+  action:
+    service: notify.ms_teams_petr
+    data:
+      message: "Nikdo neni doma a neni zakodovano"
+      title: "HA Roubenka"

@@ -1,0 +1,19 @@
+- alias: Zakodovano a pohyb na terase
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.door_opening_detector_device_24_door
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.section_1
+      state: armed
+  action:
+    - service: notify.ms_teams_petr
+      data:
+        message: "Pohyb na terase !!!"
+        title: "HA Roubenka"
+    - service: notify.clicksend_petr
+      data:
+        message: "HA Roubenka - pohyb na terase"
+
+    

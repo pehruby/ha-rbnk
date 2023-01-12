@@ -1,0 +1,13 @@
+- alias: "Kontrola teploty ve studni"
+  trigger: 
+    - platform: time
+      at: "7:30:00"
+  condition: 
+    - condition: numeric_state
+      entity_id: "sensor.thermometer_device_26_temperature"
+      below: 3
+  action:
+    - service: notify.ms_teams_petr
+      data:
+        message: "Teplota ve studni je pod 3st.C"
+        title: "HA Roubenka"

@@ -15,6 +15,7 @@ homeassistant:
   longitude: !secret homeassistant_longitude
   elevation: !secret homeassistant_elevation
   unit_system: metric
+  country: CZ
   time_zone: Europe/Prague
   currency: CZK
   external_url: !secret external_url
@@ -40,10 +41,16 @@ panel_iframe:
     icon: mdi:wrench
     url: !secret configurator_url
     require_admin: true
+  duplicati:
+    title: Duplicati
+    icon: mdi:backup-restore
+    url: !secret duplicati_url
+    require_admin: true
 
 automation: !include_dir_merge_list automation
 scene: !include_dir_merge_list scene
 script: !include_dir_merge_named script
+group: !include groups.yaml
 
 recorder:
   db_url: !secret mariadb
@@ -83,3 +90,25 @@ template:
         attributes:
           entity_id: >
             {{trigger.entity_id}}
+
+binary_sensor:
+  - platform: ping
+    name: "Sypka reachability"
+    host: 192.168.167.5
+    scan_interval: 1
+  - platform: ping
+    name: "Google DNS reachability"
+    host: 8.8.8.8
+    scan_interval: 1
+
+
+notify:
+  - platform: msteams
+    name: ms_teams_petr
+    url: !secret msteams_url
+
+  - platform: clicksend
+    name: clicksend_petr
+    username: !secret petr_email
+    api_key: !secret clicksend_api_key
+    recipient: !secret petr_phone

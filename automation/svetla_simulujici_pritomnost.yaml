@@ -5,7 +5,11 @@
       entity_id: sun.sun
       attribute: elevation
       # Can be a positive or negative number
-      below: -4.0
+      below: -2.0
+  condition: 
+    - condition: state
+      entity_id: "group.presence_home"
+      state: "not_home"
   action:
     - service: switch.turn_on
       target:
@@ -15,7 +19,7 @@
   description: ""
   trigger:
     - platform: time
-      at: "21:10:00"
+      at: "18:10:00"
   action:
     - service: switch.turn_off
       target:
@@ -26,6 +30,10 @@
   trigger:
     - platform: time
       at: "21:09:00"
+  condition: 
+    - condition: state
+      entity_id: "group.presence_home"
+      state: "not_home"
   action:
     - service: switch.turn_on
       target:
@@ -40,3 +48,27 @@
     - service: switch.turn_off
       target:
         entity_id: switch.shellyplus1_7c87ce592550
+
+- alias: "Zapnuti fake televize"
+  description: ""
+  trigger:
+    - platform: time
+      at: "17:10:00"
+  condition: 
+    - condition: state
+      entity_id: "group.presence_home"
+      state: "not_home"
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.shellyplus1pm_3c6105726160
+    
+- alias: "Vypnuti fake televize"
+  description: ""
+  trigger:
+    - platform: time
+      at: "21:50:00"
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.shellyplus1pm_3c6105726160

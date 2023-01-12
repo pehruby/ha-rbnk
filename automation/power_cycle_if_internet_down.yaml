@@ -1,0 +1,24 @@
+- alias: "Power cycle JA100 external switch if Internet down"
+  trigger: 
+    - platform: time_pattern
+      # Every 15min.
+      minutes: "/15"
+  condition: 
+    - condition: state
+      entity_id: "binary_sensor.sypka_reachability"
+      state: "off"
+      for:
+        minutes: 10
+    - condition: state
+      entity_id: "binary_sensor.google_dns_reachability"
+      state: "off"
+      for:
+        minutes: 10
+  action:
+    - service: switch.turn_off
+      data:
+        entity_id: switch.jablotron_100_pg_output_6
+    - delay: 00:00:15
+    - service: switch.turn_on
+      data:
+        entity_id: switch.jablotron_100_pg_output_6

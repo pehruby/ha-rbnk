@@ -1,0 +1,7 @@
+presence_home:
+  name: "Nekdo je doma"
+  entities:
+    - person.petr_hruby
+    - person.petra
+    - person.filip
+    - person.magdas
