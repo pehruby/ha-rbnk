@@ -19,7 +19,11 @@
   description: ""
   trigger:
     - platform: time
-      at: "18:10:00"
+      at: "21:10:00"
+  condition: 
+    - condition: state
+      entity_id: "group.presence_home"
+      state: "not_home"
   action:
     - service: switch.turn_off
       target:
@@ -44,6 +48,10 @@
   trigger:
     - platform: time
       at: "22:01:00"
+  condition: 
+    - condition: state
+      entity_id: "group.presence_home"
+      state: "not_home"
   action:
     - service: switch.turn_off
       target:
@@ -53,7 +61,7 @@
   description: ""
   trigger:
     - platform: time
-      at: "17:10:00"
+      at: "18:30:00"
   condition: 
     - condition: state
       entity_id: "group.presence_home"
@@ -67,7 +75,7 @@
   description: ""
   trigger:
     - platform: time
-      at: "21:50:00"
+      at: "21:55:00"
   action:
     - service: switch.turn_off
       target:

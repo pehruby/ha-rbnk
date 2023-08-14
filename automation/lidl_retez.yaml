@@ -1,0 +1,34 @@
+- alias: Rozsvit retez schody v noci
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_detector_device_4_motion  # PIR chodba priz
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.motion_detector_device_30_motion  # PIR schody
+      to: 'on'
+  condition:
+    - condition: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      below: -1.0
+    - condition: state
+      entity_id: alarm_control_panel.section_1
+      state: disarmed
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.0xcc86ecfffead0c2d
+        transition: 5
+        brightness: 20
+        color_temp: 500
+    - delay: 00:00:20
+    - service: light.turn_off
+      data:
+        entity_id: light.0xcc86ecfffead0c2d
+        transition: 5
+
+
+# 
+# "color_temp": 150 (150-500)
+# "brightness": 1 (0-254)
+# "color":{"r":46,"g":102,"b":150}

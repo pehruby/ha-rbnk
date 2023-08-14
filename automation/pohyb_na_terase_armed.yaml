@@ -14,6 +14,9 @@
         title: "HA Roubenka"
     - service: notify.clicksend_petr
       data:
-        message: "HA Roubenka - pohyb na terase"
+        message: "HA Roubenka - pohyb na terase !!!"
+    - service: notify.clicksend_petra
+      data:
+        message: "HA Roubenka - pohyb na terase !!!"
 
     

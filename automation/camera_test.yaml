@@ -1,0 +1,10 @@
+- alias: "Test kamery"
+  trigger: 
+    - platform: time
+      at: "20:45:00"
+  action:
+    - service: camera.snapshot
+      data:
+        filename: /tmp/snapshot.jpeg
+      target:
+        entity_id: camera.rybina_vchod

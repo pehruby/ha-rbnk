@@ -1,0 +1,24 @@
+- alias: Regular SMS GW test
+  trigger:
+    platform: time_pattern
+    hours: 10
+    minutes: 0
+    seconds: 0
+  condition:
+    - or:
+      - condition: template
+        value_template: '{{ now().strftime("%m-%d") == "07-05" }}'
+      - condition: template
+        value_template: '{{ now().strftime("%m-%d") == "10-05" }}'
+      - condition: template
+        value_template: '{{ now().strftime("%m-%d") == "01-05" }}'
+      - condition: template
+        value_template: '{{ now().strftime("%m-%d") == "04-05" }}'
+  action:
+    - service: notify.ms_teams_petr
+      data:
+        message: "Regular test !!!"
+        title: "HA Roubenka"
+    - service: notify.clicksend_petr
+      data:
+        message: "HA Roubenka - SMS test"

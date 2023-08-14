@@ -10,7 +10,7 @@
         minutes: 30
     - condition: state
       entity_id: "alarm_control_panel.section_1"
-      state: "Disarmed"
+      state: "disarmed"
   action:
     service: notify.ms_teams_petr
     data:

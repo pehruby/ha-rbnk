@@ -1,0 +1,6 @@
+- platform: template
+  sensors:
+    pocet_osob_doma:
+      friendly_name: "Pocet osob doma"
+      value_template: >-
+        {{ states.person | selectattr('state','eq','home') | list | count }}

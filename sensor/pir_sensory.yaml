@@ -1,0 +1,14 @@
+- platform: template
+  sensors:
+    pir_all_prizemi:
+      friendly_name: "Pohyb PIR prizemi"
+      value_template: >-
+        {% if is_state('binary_sensor.motion_detector_device_3_motion', 'on')
+           or is_state('binary_sensor.motion_detector_device_4_motion', 'on')
+           or is_state('binary_sensor.motion_detector_device_5_motion', 'on')
+           or is_state('binary_sensor.motion_detector_device_6_motion', 'on') 
+           %}
+           on
+        {% else %}
+           off
+        {% endif %}

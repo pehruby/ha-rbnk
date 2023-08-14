@@ -19,3 +19,5 @@
     - service: switch.turn_off
       data:
         entity_id: switch.jablotron_100_pg_output_4
+  mode: single
+  max_exceeded: silent

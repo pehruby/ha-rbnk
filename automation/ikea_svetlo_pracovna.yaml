@@ -1,0 +1,49 @@
+- alias: "Styrbar IKEA svetlo pracovna zhasni"
+  trigger: 
+    - platform: mqtt
+      payload: 'off'
+      topic: zigbee2mqtt/0x040d84fffe8d2ece/action
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.shellyplus1_7c87ce592550
+    - service: light.turn_off
+      target:
+        entity_id: light.0x6c5cb1fffecbb89e
+
+- alias: "Styrbar IKEA svetlo pracovna rozsvit"
+  trigger: 
+    - platform: mqtt
+      payload: 'on'
+      topic: zigbee2mqtt/0x040d84fffe8d2ece/action
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.shellyplus1_7c87ce592550
+    - service: light.turn_on
+      target:
+        entity_id: light.0x6c5cb1fffecbb89e
+
+- alias: "Styrbar IKEA svetlo pracovna ztlum"
+  trigger: 
+    - platform: mqtt
+      payload: 'arrow_left_click'
+      topic: zigbee2mqtt/0x040d84fffe8d2ece/action
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.0x6c5cb1fffecbb89e
+      data:
+        brightness_step: -20
+
+- alias: "Styrbar IKEA svetlo pracovna zesil"
+  trigger: 
+    - platform: mqtt
+      payload: 'arrow_right_click'
+      topic: zigbee2mqtt/0x040d84fffe8d2ece/action
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.0x6c5cb1fffecbb89e
+      data:
+        brightness_step: 20
