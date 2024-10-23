@@ -1,0 +1,59 @@
+- alias: "Otevreni vstupnich dveri - chime"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.door_opening_detector_device_16_door  # vstupni dvere magnet
+      to: 'on'
+  condition:   
+    - condition: state
+      entity_id: "alarm_control_panel.section_1"
+      state: "disarmed"
+    - condition: state
+      entity_id: "binary_sensor.motion_detector_device_4_motion"    # vstupni chodba PIR
+      state: "off"
+      for:
+        minutes: 1
+  action:       # pipni Zigbee alarmem
+    - service: mqtt.publish
+      data:
+        topic: zigbee2mqtt/0x847127fffe096bc3/set
+        payload: '{"volume": 0}'
+    - service: mqtt.publish
+      data:
+        topic: zigbee2mqtt/0x847127fffe096bc3/set
+        payload: '{"warning": {"mode": "emergency_panic", "level": "low", "strobe_level": "low", "strobe": "false", "strobe_duty_cycle": 0, "duration": 1, "volume": 1}}'
+    - delay:
+        milliseconds: 500
+    - service: mqtt.publish
+      data:
+        topic: zigbee2mqtt/0x847127fffe096bc3/set
+        payload: '{"warning": {"mode": "stop", "level": "low", "strobe_level": "low", "strobe": "false", "strobe_duty_cycle": 1, "duration": 1, "volume": 1}}'
+
+- alias: "Otevreni dveri terasa - chime"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.door_opening_detector_device_20_door  # dvere terasa magnet
+      to: 'on'
+  condition:   
+    - condition: state
+      entity_id: "alarm_control_panel.section_1"
+      state: "disarmed"
+    - condition: state
+      entity_id: "binary_sensor.motion_detector_device_5_motion"    # obyvak PIR
+      state: "off"
+      for:
+        minutes: 1
+  action:       # pipni Zigbee alarmem
+    - service: mqtt.publish
+      data:
+        topic: zigbee2mqtt/0x847127fffe096bc3/set
+        payload: '{"volume": 0}'
+    - service: mqtt.publish
+      data:
+        topic: zigbee2mqtt/0x847127fffe096bc3/set
+        payload: '{"warning": {"mode": "emergency_panic", "level": "low", "strobe_level": "low", "strobe": "false", "strobe_duty_cycle": 0, "duration": 1, "volume": 1}}'
+    - delay:
+        milliseconds: 500
+    - service: mqtt.publish
+      data:
+        topic: zigbee2mqtt/0x847127fffe096bc3/set
+        payload: '{"warning": {"mode": "stop", "level": "low", "strobe_level": "low", "strobe": "false", "strobe_duty_cycle": 1, "duration": 1, "volume": 1}}'

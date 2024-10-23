@@ -15,13 +15,59 @@
       entity_id: alarm_control_panel.section_1
       state: disarmed
   action:
+    - delay: '00:00:01'
     - service: light.turn_on
       data:
         entity_id: light.0xcc86ecfffead0c2d
         transition: 5
         brightness: 20
         color_temp: 500
-    - delay: 00:00:20
+
+- alias: Udrzuj timer schody pri on
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_detector_device_4_motion  # PIR chodba priz
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.motion_detector_device_30_motion  # PIR schody
+      to: 'on'
+  condition:
+    - condition: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      below: -1.0
+    - condition: state
+      entity_id: light.0xcc86ecfffead0c2d
+      state: 'on'
+    - condition: state
+      entity_id: alarm_control_panel.section_1
+      state: disarmed
+  action:
+    - service: timer.start
+      target:
+        entity_id: timer.led_schody   
+
+- alias: Start timer schody when PIR goes off
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_detector_device_4_motion  # PIR chodba priz
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.motion_detector_device_30_motion  # PIR schody
+      to: 'off'
+  action:
+    - service: timer.start
+      target:
+        entity_id: timer.led_schody
+
+
+- alias: Zhasni retez schody v noci     # kdyz vyprsi timer
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.led_schody
+  action:
     - service: light.turn_off
       data:
         entity_id: light.0xcc86ecfffead0c2d

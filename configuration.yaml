@@ -98,12 +98,82 @@ binary_sensor:
   - platform: ping
     name: "Sypka reachability"
     host: 192.168.167.5
-    scan_interval: 1
+    scan_interval: 10
   - platform: ping
     name: "Google DNS reachability"
     host: 8.8.8.8
-    scan_interval: 1
+    scan_interval: 10
 
+sql:
+  - name: pir_terasa_last_changed
+    query: >
+          SELECT 
+            last_updated_ts 
+          FROM 
+            states 
+          WHERE 
+            metadata_id = (
+              SELECT
+                metadata_id
+              FROM
+                states_meta
+              WHERE
+                entity_id = 'binary_sensor.door_opening_detector_device_24_door'
+            ) 
+          AND 
+            state = 'on' 
+          ORDER BY 
+            last_updated_ts DESC 
+          LIMIT 
+            1;
+    column: "last_updated_ts"
+    # value_template: "{{ as_timestamp(value~'+00:00') | timestamp_local }}" 
+  - name: pir_terasa_last_changed_2
+    query: >
+          SELECT 
+            * 
+          FROM (
+            SELECT 
+              * 
+            FROM 
+              states 
+            WHERE 
+              metadata_id  = (
+                SELECT
+                  metadata_id
+                FROM
+                  states_meta
+                WHERE
+                  entity_id = 'binary_sensor.door_opening_detector_device_24_door'
+            ) 
+            AND 
+              state = 'on' 
+            ORDER BY 
+              last_updated_ts DESC 
+            LIMIT 2) two_entity 
+          ORDER BY 
+            last_updated_ts ASC 
+          LIMIT 
+            1;
+    column: "last_updated_ts"
+# find entry with state 'on' old at least 30s
+  - name: pir_terasa_older_30s
+    query: >
+          SELECT
+            last_updated_ts
+          FROM
+            states
+            INNER JOIN states_meta ON
+              states.metadata_id = states_meta.metadata_id
+          WHERE
+            states_meta.entity_id = 'binary_sensor.door_opening_detector_device_24_door'
+            AND last_updated_ts <= UNIX_TIMESTAMP(NOW() - INTERVAL 30 SECOND)
+            AND state = 'on'
+          ORDER BY
+            last_updated_ts DESC
+          LIMIT
+            1;
+    column: "last_updated_ts"
 
 notify:
   - platform: msteams
@@ -120,3 +190,9 @@ notify:
     username: !secret petr_email
     api_key: !secret clicksend_api_key
     recipient: !secret petra_phone
+
+timer:
+  led_schody:
+    duration: "00:00:30"
+  led_loznice:
+    duration: "00:00:30"

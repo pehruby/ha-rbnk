@@ -1,0 +1,40 @@
+
+- alias: Rozsvit retez loznice v noci
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.0x54ef44100087f05c_occupancy  # PIR loznice pod posteli
+      to: 'on'
+
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.0x54ef44100087f05c_illuminance_lux
+      below: 12
+    - condition: state
+      entity_id: alarm_control_panel.section_1
+      state: disarmed
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.0x84fd27fffe92fb74
+        transition: 5
+        brightness: 2
+        rgb_color: [255,165,44]
+    - service: timer.start
+      target:
+        entity_id: timer.led_loznice
+
+- alias: Zhasni retez loznice v noci     # kdyz vyprsi timer
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.led_loznice
+  action:
+    - service: light.turn_off
+      data:
+        entity_id: light.0x84fd27fffe92fb74
+        transition: 5
+# 
+# "color_temp": 150 (150-500)
+# "brightness": 1 (0-254)
+# "color":{"r":46,"g":102,"b":150}

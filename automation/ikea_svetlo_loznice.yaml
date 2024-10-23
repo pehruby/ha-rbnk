@@ -1,0 +1,75 @@
+- alias: "Styrbar svetlo loznice zhasni"
+  trigger: 
+    - platform: mqtt
+      payload: 'off'
+      topic: zigbee2mqtt/0xa49e69fffe1fc2b9/action
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.shelly1_40F520169505
+    - service: light.turn_off
+      target:
+        entity_id: light.0x04cd15fffede5067
+
+- alias: "Styrbar svetlo loznice rozsvit po zapadu slunce"
+  trigger: 
+    - platform: mqtt
+      payload: 'on'
+      topic: zigbee2mqtt/0xa49e69fffe1fc2b9/action
+  condition:
+    - condition: state
+      entity_id: sun.sun
+      state: "below_horizon"
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.shelly1_40F520169505
+    - service: light.turn_on
+      target:
+        entity_id: light.0x04cd15fffede5067
+      data:
+        color_temp: 454     # warm
+
+- alias: "Styrbar svetlo loznice rozsvit ve dne"
+  trigger: 
+    - platform: mqtt
+      payload: 'on'
+      topic: zigbee2mqtt/0xa49e69fffe1fc2b9/action
+  condition:
+    - condition: state
+      entity_id: sun.sun
+      state: "above_horizon"
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.shelly1_40F520169505
+    - service: light.turn_on
+      target:
+        entity_id: light.0x04cd15fffede5067
+      data:
+        color_temp: 370     # neutral
+
+
+- alias: "Styrbar svetlo loznice ztlum"
+  trigger: 
+    - platform: mqtt
+      payload: 'arrow_left_click'
+      topic: zigbee2mqtt/0xa49e69fffe1fc2b9/action
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.0x04cd15fffede5067
+      data:
+        brightness_step: -20
+
+- alias: "Styrbar svetlo loznice zesil"
+  trigger: 
+    - platform: mqtt
+      payload: 'arrow_right_click'
+      topic: zigbee2mqtt/0xa49e69fffe1fc2b9/action
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.0x04cd15fffede5067
+      data:
+        brightness_step: 20

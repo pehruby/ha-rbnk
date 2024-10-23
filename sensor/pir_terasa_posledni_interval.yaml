@@ -1,0 +1,7 @@
+
+- platform: template
+  sensors:
+    pir_terasa_posledni_interval:
+      friendly_name: "PIR terasa posledni interval (s)"
+      value_template: >
+        {{  ((states('sensor.pir_terasa_last_changed') | int(0)) - (states('sensor.pir_terasa_older_30s') | int(0)))  }}
