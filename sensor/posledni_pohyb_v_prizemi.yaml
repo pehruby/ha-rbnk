@@ -1,0 +1,6 @@
+- platform: template
+  sensors:
+    posledni_pohyb_prizemi:
+      friendly_name: "Posledni pohyb v prizemi"
+      value_template: >-
+        {{  [states.binary_sensor.motion_detector_device_4_motion.last_changed, states.binary_sensor.motion_detector_device_5_motion.last_changed]|max | as_timestamp| timestamp_custom('%d.%m.%Y %H:%M') }}
