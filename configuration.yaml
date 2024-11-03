@@ -32,22 +32,6 @@ logger:
   logs: 
     custom_components.jablotron100: debug
 
-panel_iframe:
-  portainer:
-    title: Portainer
-    url: !secret portainer_url
-    icon: mdi:docker
-    require_admin: true
-  configurator:
-    title: Configurator
-    icon: mdi:wrench
-    url: !secret configurator_url
-    require_admin: true
-  duplicati:
-    title: Duplicati
-    icon: mdi:backup-restore
-    url: !secret duplicati_url
-    require_admin: true
 
 automation: !include_dir_merge_list automation
 scene: !include_dir_merge_list scene
