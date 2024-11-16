@@ -5,12 +5,12 @@
       minutes: "/15"
   condition: 
     - condition: state
-      entity_id: "binary_sensor.sypka_reachability"
+      entity_id: "binary_sensor.192_168_167_5"
       state: "off"
       for:
         minutes: 10
     - condition: state
-      entity_id: "binary_sensor.google_dns_reachability"
+      entity_id: "binary_sensor.8_8_8_8"
       state: "off"
       for:
         minutes: 10

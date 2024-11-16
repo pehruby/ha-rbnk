@@ -6,7 +6,7 @@
   condition:
     - condition: state
       entity_id: alarm_control_panel.section_1
-      state: armed
+      state: 'armed away'
   action:
     - service: notify.ms_teams_petr
       data:
